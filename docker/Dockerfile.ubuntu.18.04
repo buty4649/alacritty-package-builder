@@ -1,0 +1,17 @@
+FROM ubuntu:18.04
+
+RUN sed -i -e 's,archive.ubuntu.com,ja.archive.ubuntu.com,g' /etc/apt/sources.list
+RUN apt-get update && apt-get install -y git rustc cargo cmake libfreetype6-dev libfontconfig1-dev xclip
+RUN git clone --depth 1 https://github.com/jwilm/alacritty.git
+
+WORKDIR alacritty
+RUN cargo build --release
+
+WORKDIR target/release
+COPY package package
+RUN cp -p alacritty package/usr/bin && \
+    cp ../../alacritty-completions.bash package/etc/bash_completion.d && \
+    cp ../../alacritty.yml package/usr/share/applications && \
+    cp ../../alacritty.desktop package/usr/share/applications && \
+    gzip -9fc ../../alacritty.man > package/usr/share/man/man1/alacritty.1.gz
+RUN dpkg-deb -b package alacritty-`awk '/Version:/{print $2}' package/DEBIAN/control`.deb

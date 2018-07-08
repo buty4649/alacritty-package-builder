@@ -1,0 +1,9 @@
+version: '3'
+services:
+  ubuntu-18.04:
+    build:
+      context: ubuntu
+      dockerfile: ../docker/Dockerfile.ubuntu.18.04
+    command: find ./ -name '*.deb' -exec cp \{\} /tmp \;
+    volumes:
+      - .:/tmp
