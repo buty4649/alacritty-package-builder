@@ -1,5 +1,5 @@
 Package: alacritty
-Version: 0.1.0-git<%GITID%>
+Version: 0.1.0-git<%GITID%>+vte
 Maintainer: buty4649 <buty4649@gmail.com>
 Section: x11
 Architecture: amd64

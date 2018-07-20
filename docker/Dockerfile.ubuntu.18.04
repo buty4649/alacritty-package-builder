@@ -4,8 +4,11 @@ RUN sed -i -e 's,archive.ubuntu.com,ja.archive.ubuntu.com,g' /etc/apt/sources.li
 RUN apt-get update && apt-get install -y git rustc cargo cmake libfreetype6-dev libfontconfig1-dev xclip
 RUN git clone --depth 1 https://github.com/jwilm/alacritty.git
 
+COPY patch patch
+
 WORKDIR alacritty
-RUN cargo build --release
+RUN find ../patch -name '*.patch' -exec cat \{\} \; | patch -p1 && \
+    cargo build --release
 
 WORKDIR target/release
 COPY package package
