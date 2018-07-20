@@ -4,6 +4,6 @@ services:
     build:
       context: ubuntu
       dockerfile: ../docker/Dockerfile.ubuntu.18.04
-    command: find ./ -name '*.deb' -exec cp \{\} /tmp \;
+    command: find ./ -name '*.deb' -exec cp -v \{\} /tmp \;
     volumes:
       - .:/tmp

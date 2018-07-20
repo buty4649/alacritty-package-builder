@@ -1,21 +1,14 @@
 FROM ubuntu:18.04
 
 RUN sed -i -e 's,archive.ubuntu.com,ja.archive.ubuntu.com,g' /etc/apt/sources.list
-RUN apt-get update && apt-get install -y git rustc cargo cmake libfreetype6-dev libfontconfig1-dev xclip
+RUN apt-get update && \
+    apt-get install -y git rustc cargo cmake libfreetype6-dev libfontconfig1-dev xclip && \
+    cargo install cargo-deb
 RUN git clone --depth 1 https://github.com/jwilm/alacritty.git
 
-COPY patch patch
-
 WORKDIR alacritty
-RUN find ../patch -name '*.patch' -exec cat \{\} \; | patch -p1 && \
-    cargo build --release
-
-WORKDIR target/release
-COPY package package
-RUN cp -p alacritty package/usr/bin && \
-    cp ../../alacritty-completions.bash package/etc/bash_completion.d && \
-    cp ../../alacritty.yml package/usr/share/applications && \
-    cp ../../alacritty.desktop package/usr/share/applications && \
-    gzip -9fc ../../alacritty.man > package/usr/share/man/man1/alacritty.1.gz && \
-    sed -i 's/<%GITID%>/'`git rev-parse HEAD | cut -c 1-8`'/g' package/DEBIAN/control
-RUN dpkg-deb -b package alacritty-`awk '/Version:/{print $2}' package/DEBIAN/control`.deb
+RUN sed -i \
+        -e 's!^\(version = "0.1.0\)"$!\1-git'`git rev-parse HEAD | cut -c1-8`'+vte"!g' \
+        -e 's!^vte = .*$!vte = { git = "https://github.com/amosbird/vte.git", branch= "patch-1" }!g' \
+        -e '/^debug =/d' Cargo.toml && \
+    cargo deb
