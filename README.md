@@ -1,2 +1,6 @@
 # alacritty-package-builder
-Package build tool for https://github.com/jwilm/alacritty/tree/68b3d8abfdeeb388edb1b5e0528d3fddb66fd9e8
+[alacritty](https://github.com/jwilm/alacritty/) 用のパッケージをビルドします。
+また、OSC52のバッファがデフォルトでは1000byteしかない問題を解決するためにパッチを当てています。
+
+* https://github.com/jwilm/alacritty/issues/1002
+
