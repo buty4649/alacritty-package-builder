@@ -13,5 +13,6 @@ RUN cp -p alacritty package/usr/bin && \
     cp ../../alacritty-completions.bash package/etc/bash_completion.d && \
     cp ../../alacritty.yml package/usr/share/applications && \
     cp ../../alacritty.desktop package/usr/share/applications && \
-    gzip -9fc ../../alacritty.man > package/usr/share/man/man1/alacritty.1.gz
+    gzip -9fc ../../alacritty.man > package/usr/share/man/man1/alacritty.1.gz && \
+    sed -i 's/<%GITID%>/'`git rev-parse HEAD | cut -c 1-8`'/g' package/DEBIAN/control
 RUN dpkg-deb -b package alacritty-`awk '/Version:/{print $2}' package/DEBIAN/control`.deb
