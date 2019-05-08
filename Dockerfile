@@ -10,7 +10,7 @@ RUN rustup override set stable && \
     rustup update stable && \
     cargo install cargo-deb
 
-ENV VERSION v0.3.0
+ENV VERSION v0.3.2
 
 RUN git clone --depth 1 --branch $VERSION https://github.com/jwilm/alacritty.git
 WORKDIR alacritty
