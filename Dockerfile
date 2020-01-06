@@ -10,8 +10,8 @@ RUN rustup override set stable && \
     rustup update stable && \
     cargo install cargo-deb
 
-#ENV VERSION v0.4.0
-ENV COMMIT_ID b115b9038566d6ce0ed56f4a50c428c98e04b51a
+#ENV VERSION v0.4.1-rc1
+ENV COMMIT_ID 328aff0aff9cdf26f08cb579e945b0c87327600b
 
 RUN mkdir alacritty && cd alacritty && \
     git init && \
