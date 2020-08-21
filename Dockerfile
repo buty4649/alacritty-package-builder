@@ -10,15 +10,15 @@ RUN rustup override set stable && \
     rustup update stable && \
     cargo install cargo-deb
 
-#ENV VERSION v0.4.1-rc1
-ENV COMMIT_ID 328aff0aff9cdf26f08cb579e945b0c87327600b
+ENV VERSION v0.5.0
 
 RUN mkdir alacritty && cd alacritty && \
     git init && \
     git remote add origin https://github.com/jwilm/alacritty.git && \
-    git fetch origin $COMMIT_ID && \
+    git fetch origin $VERSION && \
     git reset --hard FETCH_HEAD
 WORKDIR alacritty
-RUN sed -i -e 's!^\(version = ".\..\..\)"$!\1+vte"!g' alacritty/Cargo.toml && \
-        echo 'vte = { git = "https://github.com/buty4649/vte.git", branch= "more-osc-buffer" }' >> Cargo.toml && \
-        cargo build --release && cargo deb -p alacritty
+COPY metadata.toml metadata.toml
+RUN cat metadata.toml >> alacritty/Cargo.toml && \
+    cargo build --release && \
+    cargo deb -p alacritty
