@@ -10,7 +10,7 @@ RUN rustup override set stable && \
     rustup update stable && \
     cargo install cargo-deb
 
-ENV VERSION v0.5.0
+ENV VERSION v0.6.0
 
 RUN mkdir alacritty && cd alacritty && \
     git init && \
